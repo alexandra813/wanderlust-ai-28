@@ -1,0 +1,453 @@
+:root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --accent-color: #ff0080;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-color: #ffffff;
+    --text-muted: #e0e0e0;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.3);
+    /* Ensure map is below potential overlay but clickable */
+}
+
+#city-map {
+    height: 350px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 3rem;
+    background: linear-gradient(to right, #fff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+}
+
+p.subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* Form Styles */
+.search-box {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+input.search-input {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+input.search-input::placeholder {
+    color: #bbb;
+}
+
+input.search-input:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 10px rgba(37, 117, 252, 0.3);
+}
+
+select {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    cursor: pointer;
+    min-width: 250px;
+    transition: all 0.3s ease;
+}
+
+select:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.5);
+    border-color: var(--secondary-color);
+}
+
+option {
+    background: #16213e;
+    /* Solid background for options as backdrop-filter doesn't work well there */
+}
+
+button.btn-main {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button.btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 128, 0.4);
+}
+
+/* Results Dashboard */
+.results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    animation: slideUp 0.8s ease-out;
+    padding-bottom: 150px;
+    /* Fix bottom cut-off glitch */
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.recommendation-card {
+    background: linear-gradient(135deg, rgba(106, 17, 203, 0.4), rgba(37, 117, 252, 0.4));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.best-month {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #4ade80;
+    margin: 10px 0;
+    text-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+}
+
+.scores-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* Score Row Update */
+.score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.score-label-text {
+    width: 90px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.score-val {
+    width: 40px;
+    text-align: right;
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    /* Take up remaining space */
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Hotel & Tips */
+.hotel-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-hotel {
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.booking {
+    background: #003580;
+}
+
+.airbnb {
+    background: #FF5A5F;
+}
+
+.google {
+    background: #4285F4;
+}
+
+.tips-list-compact {
+    list-style: none;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    /* Prevent cut-off */
+}
+
+.tips-list-compact li {
+    margin-bottom: 12px;
+    padding-left: 24px;
+    position: relative;
+    font-size: 0.95rem;
+    color: #eee;
+
+    /* Animation */
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInTip 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Cascading Delay */
+.tips-list-compact li:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.tips-list-compact li:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.tips-list-compact li:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.tips-list-compact li:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+.tips-list-compact li:nth-child(5) {
+    animation-delay: 1.0s;
+}
+
+@keyframes slideInTip {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.tips-list-compact li::before {
+    content: '💡';
+    position: absolute;
+    left: 0;
+    animation: bounceIcon 2s infinite;
+}
+
+@keyframes bounceIcon {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+/* Attraction Layout */
+.section-title {
+    margin: 20px 0 10px;
+    font-size: 1.5rem;
+    color: #a5b4fc;
+}
+
+.attraction-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Map left, Grid right */
+    gap: 25px;
+    align-items: start;
+}
+
+#city-map {
+    height: 500px;
+    /* Taller map */
+    border-radius: 20px;
+    margin: 0;
+    /* Reset */
+    position: sticky;
+    top: 20px;
+}
+
+.attraction-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Stack cards */
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Scrollbar Style */
+.attraction-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.attraction-grid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.attraction-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s;
+}
+
+.attraction-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.attr-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.badgem {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+.attr-desc {
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.btn-ticket-sm {
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ff00cc, #333399);
+    color: white;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.btn-free {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+}
+
+@media (max-width: 900px) {
+
+    .dashboard-grid,
+    .attraction-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #city-map {
+        height: 300px;
+        position: relative;
+    }
+}
